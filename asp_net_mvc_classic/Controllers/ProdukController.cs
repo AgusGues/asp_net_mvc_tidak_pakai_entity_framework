@@ -42,6 +42,13 @@ namespace asp_net_mvc_classic.Controllers
             }
         }
 
+        //Fungsi untuk membuka halaman
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
         //Create
         [HttpPost]
         public IActionResult Create(Produk produk)

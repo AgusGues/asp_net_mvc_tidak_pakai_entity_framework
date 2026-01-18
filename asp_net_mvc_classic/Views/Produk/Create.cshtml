@@ -1,0 +1,9 @@
+﻿@model asp_net_mvc_classic.Models.Produk
+
+<h2>Tambah</h2>
+<form asp-action="Create" method="post">
+	<input asp-for="NamaProduk" class="form-control" placeholder="Nama" />
+	<input asp-for="Harga" class="form-control mt-2" />
+	<input asp-for="Stok" class="form-control mt-2" />
+	<button class="btn btn-success mt-3">Simpan</button>
+</form>
