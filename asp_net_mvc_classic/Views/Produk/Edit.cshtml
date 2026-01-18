@@ -1,0 +1,10 @@
+﻿@model asp_net_mvc_classic.Models.Produk
+
+<h2>Edit Produk</h2>
+<form asp-action="Edit" method="post">
+	<input type="hidden" asp-for="Id" />
+	<input asp-for="NamaProduk" class="form-control" />
+	<input asp-for="Harga" class="form-control mt-2" />
+	<input asp-for="Stok" class="form-control mt-2" />
+	<button class="btn btn-primary mt-3">Update</button>
+</form>
