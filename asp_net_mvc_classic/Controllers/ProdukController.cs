@@ -16,17 +16,30 @@ namespace asp_net_mvc_classic.Controllers
         }
 
         //read
-        public IActionResult Index()
+        public IActionResult Index(string keyword)
         {
             List<Produk>list = new List<Produk>();
             
             using (SqlConnection conn = _db.GetConnection())
             {
                 string query = "select * from produk";
+
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    query += " where NamaProduk like @keyword";
+                }
+
                 SqlCommand cmd = new SqlCommand(query, conn);
+
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    cmd.Parameters.AddWithValue("@keyword", "%" + keyword + "%");
+                }
+
                 conn.Open();
 
                 SqlDataReader reader = cmd.ExecuteReader();
+
                 while(reader.Read())
                 {
                     list.Add(new Produk
@@ -38,6 +51,7 @@ namespace asp_net_mvc_classic.Controllers
                     });
                 }
 
+                ViewBag.Keyword = keyword;
                 return View(list);
             }
         }
@@ -75,7 +89,7 @@ namespace asp_net_mvc_classic.Controllers
 
             using (SqlConnection conn = _db.GetConnection())
             {
-                string query = "select * from produk where id = @Id";
+                string query = "select * from produk where Id = @Id";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Id", Id);
                 conn.Open();
@@ -96,9 +110,13 @@ namespace asp_net_mvc_classic.Controllers
         [HttpPost]
         public IActionResult Edit(Produk produk)
         {
+            //Melihat hasil di console
+            //Console.WriteLine($"ID: {produk.Id}");
+            //Console.WriteLine($"Nama: {produk.NamaProduk}");
+
             using (SqlConnection conn = _db.GetConnection())
             {
-                string query = @"update produk set NamaProduk = @Nama, Harga=@Harga, @Stok=Stok where @Id=Id";
+                string query = @"update produk set NamaProduk = @Nama, Harga=@Harga, Stok=@Stok where @Id=Id";
                 SqlCommand cmd = new SqlCommand(query,conn);
                 cmd.Parameters.AddWithValue("@Id", produk.Id);
                 cmd.Parameters.AddWithValue("@Nama",produk.NamaProduk);
